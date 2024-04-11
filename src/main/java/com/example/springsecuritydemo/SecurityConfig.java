@@ -17,7 +17,21 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder(4);
     }
 
-    //DEPRECATED
+
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http.authorizeHttpRequests((auth) -> auth
+                        .requestMatchers("/home").permitAll()
+                        .requestMatchers("/portal").authenticated()
+                        .requestMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
+                        .requestMatchers("/**").permitAll())
+                .httpBasic(Customizer.withDefaults());
+
+        return http.build();
+    }
+
+
+    //DEPRECATED -> MADE FOR TEST THE FILTER CHAIN INITIALY
 
     //    @Bean
     //    public InMemoryUserDetailsManager userDetailsManager(){
@@ -35,17 +49,6 @@ public class SecurityConfig {
     //                .build();
     //        return new InMemoryUserDetailsManager(user,admin);
     //    }
-
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/home").permitAll()
-                        .requestMatchers("/portal").authenticated()
-                        .requestMatchers("/admin/**").hasAuthority("ADMIN"))
-                .httpBasic(Customizer.withDefaults());
-
-        return http.build();
-    }
 }
 
 

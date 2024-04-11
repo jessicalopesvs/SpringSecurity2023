@@ -8,6 +8,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 public class MainController {
 
+    @GetMapping("/")
+    public String index(){
+        return "connected";
+    }
+
     @GetMapping("/home")
     public String home(){
         return "success";

@@ -25,19 +25,24 @@ public class DBInitializerConfig {
 
     @Bean
     public CommandLineRunner clr() {
-
         return (args -> {
-            Optional<User> o = userRepository.findByUsername("user");
-            if (o.isEmpty()) {
+            Optional<User> o = userRepository.findByUsername("admin");
+            if (o.isPresent()) {
+                log.info("User 'user' already exists. Skipping initialization.");
+            } else {
                 User u = new User();
-                u.setUsername("user");
-                u.setPassword(passwordEncoder.encode("password"));
+                u.setUsername("admin");
+                u.setPassword(passwordEncoder.encode("admin"));
                 u.setActive(true);
                 u.setRoles("ROLE_ADMIN");
-                userRepository.save(u);
+                try {
+                    userRepository.save(u);
+                    log.info("User 'admin' created successfully.");
+                } catch (Exception e) {
+                    log.error("Failed to save user 'user': {}", e.getMessage());
+                }
             }
         });
-
     }
 
 }
