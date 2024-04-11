@@ -1,4 +1,4 @@
-package com.example.springsecuritydemo;
+package com.example.springsecuritydemo.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,7 +23,7 @@ public class SecurityConfig {
         http.authorizeHttpRequests((auth) -> auth
                         .requestMatchers("/home").permitAll()
                         .requestMatchers("/portal").authenticated()
-                        .requestMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/**").permitAll())
                 .httpBasic(Customizer.withDefaults());
 

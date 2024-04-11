@@ -1,6 +1,8 @@
-package com.example.springsecuritydemo;
+package com.example.springsecuritydemo.config;
 
 
+import com.example.springsecuritydemo.User;
+import com.example.springsecuritydemo.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,10 @@ public class DBInitializerConfig {
 
     @Bean
     public CommandLineRunner clr() {
+
+        String user = "user";
+        String admin = "admin";
+
         return (args -> {
             Optional<User> o = userRepository.findByUsername("admin");
             if (o.isPresent()) {

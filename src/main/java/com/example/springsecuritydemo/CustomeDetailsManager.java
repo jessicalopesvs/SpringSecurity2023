@@ -7,12 +7,13 @@ import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserDetailsManagerImpl implements UserDetailsManager {
+public class CustomeDetailsManager implements UserDetailsManager {
 
     @Autowired
     private UserRepository userRepository;
 
-    public UserDetails loadUserbyUsername(String username) throws UsernameNotFoundException{
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException{
         return userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("user not found"));
     }
@@ -41,8 +42,5 @@ public class UserDetailsManagerImpl implements UserDetailsManager {
         return false;
     }
 
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return null;
-    }
+
 }
