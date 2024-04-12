@@ -7,10 +7,19 @@ import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.stereotype.Service;
 
 @Service
-public class CustomeDetailsManager implements UserDetailsManager {
+public class CustomerDetailsManager implements UserDetailsManager {
 
     @Autowired
     private UserRepository userRepository;
+
+
+    public boolean userExistsCheck(String username){
+        if(userRepository.findByUsername(username).isPresent()){
+            return false;
+        } else
+            return true;
+
+    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException{

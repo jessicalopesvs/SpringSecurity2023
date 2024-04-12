@@ -22,7 +22,7 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests((auth) -> auth
                         .requestMatchers("/home").permitAll()
-                        .requestMatchers("/portal").authenticated()
+                        .requestMatchers("/portal").hasRole("USER")
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/**").permitAll())
                 .httpBasic(Customizer.withDefaults());
