@@ -1,4 +1,4 @@
-package com.example.springsecuritydemo;
+package com.example.springsecuritydemo.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -27,12 +27,20 @@ public class User implements UserDetails {
     private String password;
     @Column
     private boolean active;
-    @Column
-    private String roles;
+
+
+    @ManyToMany
+    @JoinTable(
+            name = "users_roles",
+            joinColumns = @JoinColumn(
+                    name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(
+                    name = "role_id", referencedColumnName = "id"))
+    private Collection<Role> roles;
 
     public Collection<? extends GrantedAuthority> getAuthorities(){
         List<GrantedAuthority> result = new ArrayList<>();
-        result.add(new SimpleGrantedAuthority(roles));
+        result.add(new SimpleGrantedAuthority(password));//mudar pra roles
         return result;
     }
 
