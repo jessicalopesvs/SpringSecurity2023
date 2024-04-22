@@ -2,28 +2,35 @@ package com.example.springsecuritydemo;
 
 import com.example.springsecuritydemo.model.Privilege;
 import com.example.springsecuritydemo.model.Role;
+import com.example.springsecuritydemo.model.User;
 import com.example.springsecuritydemo.repositories.RoleRepository;
 import com.example.springsecuritydemo.repositories.UserRepository;
 import jakarta.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 @Service("userDetailsService")
 @Transactional
+@Slf4j
 public class MyUserDetailsManager implements UserDetailsManager {
 
     @Autowired
     private UserRepository userRepository;
+    private PasswordEncoder encoder;
+
 
     @Autowired
     private RoleRepository roleRepository;
@@ -31,14 +38,15 @@ public class MyUserDetailsManager implements UserDetailsManager {
     @Autowired
     private MessageSource messageSource;
 
-
-
-
+    public MyUserDetailsManager(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException{
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+
         return userRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("user not found"));
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + username));
     }
 
 

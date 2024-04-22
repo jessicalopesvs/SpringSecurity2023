@@ -9,6 +9,7 @@ import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -18,9 +19,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-@Component
+@Configuration
 @Slf4j
-
 public class SetupUserData implements ApplicationListener<ContextRefreshedEvent> {
 
     boolean isSetup = false;
@@ -55,10 +55,13 @@ public class SetupUserData implements ApplicationListener<ContextRefreshedEvent>
         Role role = roleRepository.findByName(roleUser);
         if (role == null) {
             role = new Role(roleUser);
+            role.setName(roleUser);
             role.setPrivileges(privileges);
             roleRepository.save(role);
-            log.info("Role {} created successfully", role);
+            log.info("Role {} created successfully", role.getName());
         }
+        log.info("Role {} already exists", role.getName());
+
     }
 
 
@@ -68,7 +71,10 @@ public class SetupUserData implements ApplicationListener<ContextRefreshedEvent>
 
         if (privilege == null) {
             privilege = new Privilege(privilegeName);
+            privilege.setName(privilegeName);
             privilegeRepository.save(privilege);
+            log.info("Privilege {} created successfully", privilege.getName());
+
         }
         return privilege;
     }

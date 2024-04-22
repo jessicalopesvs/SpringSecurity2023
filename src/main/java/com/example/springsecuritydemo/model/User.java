@@ -29,7 +29,7 @@ public class User implements UserDetails {
     private boolean active;
 
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER) // Eagerly fetch roles
     @JoinTable(
             name = "users_roles",
             joinColumns = @JoinColumn(
@@ -38,10 +38,12 @@ public class User implements UserDetails {
                     name = "role_id", referencedColumnName = "id"))
     private Collection<Role> roles;
 
-    public Collection<? extends GrantedAuthority> getAuthorities(){
-        List<GrantedAuthority> result = new ArrayList<>();
-        result.add(new SimpleGrantedAuthority(password));//mudar pra roles
-        return result;
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        for (Role role : roles) {
+            authorities.add(new SimpleGrantedAuthority(role.getName()));
+        }
+        return authorities;
     }
 
     @Override

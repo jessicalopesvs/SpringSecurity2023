@@ -1,4 +1,4 @@
-package com.example.springsecuritydemo;
+package com.example.springsecuritydemo.controllers;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,11 +20,11 @@ public class MainController {
 
     @GetMapping("/authority")
     public String authority(){
-        return "Has authority";
+        return "Has USER authority";
     }
 
     @GetMapping("/admin")
     public String role(){
-        return "Has role";
+        return "Has ADMIN role";
     }
 }
