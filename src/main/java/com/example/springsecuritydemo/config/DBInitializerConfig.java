@@ -58,7 +58,8 @@ public class DBInitializerConfig {
                     user.setActive(true);
                     user.setRoles(Collections.singletonList(roleRepository.findByName(roles)));
                     try {
-                        cm.createUser(user);
+                        userRepository.save(user);
+//                        cm.createUser(user);
                         log.info("User '{}' created successfully with roles: {}", username, roles);
                     } catch (Exception e) {
                         log.error("Failed to save user '{}': {}", username, e.getMessage());

@@ -38,14 +38,23 @@ public class MyUserDetailsManager implements UserDetailsManager {
     @Autowired
     private MessageSource messageSource;
 
-    public MyUserDetailsManager(UserRepository userRepository) {
-        this.userRepository = userRepository;
+
+    public Optional<User> findByUsername(String username){
+
+//        if(user.isPresent()){
+//            User userr = new User();
+//            userr.setUsername(user.get().getUsername());
+//            log.info("Username -> {}",userr.getUsername());
+//
+//        }
+        return userRepository.findByUsername(username);
+
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        return userRepository.findByUsername(username)
+        return findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + username));
     }
 
@@ -92,7 +101,7 @@ public class MyUserDetailsManager implements UserDetailsManager {
 
     @Override
     public void deleteUser(String username) {
-
+        userRepository.deleteByUsername(username);
     }
 
     @Override

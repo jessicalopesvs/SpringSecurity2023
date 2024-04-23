@@ -38,8 +38,8 @@ public class SecurityConfig {
         http.
 
         authorizeHttpRequests((auth) -> auth
+                .requestMatchers("/authority").hasRole("USER")
                 .requestMatchers("/admin/**").hasRole("ADMIN")
-                .requestMatchers("/portal").hasRole("USER")
                 .requestMatchers("/**").permitAll())
                 .httpBasic(Customizer.withDefaults());
 
